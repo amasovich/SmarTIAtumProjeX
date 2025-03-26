@@ -1,14 +1,11 @@
 ﻿using OpTIAtumLib;
 using OpTIAtumLib.Model;
+using OpTIAtumLib.Services;
 using OpTIAtumLib.Utility;
-using Siemens.Engineering.HmiUnified.HmiLogging.HmiLoggingCommon;
 using Siemens.Engineering.HW;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmarTIAtumProjeX.Test
 {
@@ -18,9 +15,14 @@ namespace SmarTIAtumProjeX.Test
         {
             try
             {
-                TIAConnector tia = new TIAConnector();
+                // Создаём фасадный объект для управления TIA Portal и сервисами Openness
+                var tia = new TIAConnector();
 
-                tia.CreateTIAinstance(enableGuiTIA: true);
+                // Запуск TIA Portal
+                tia.SessionService.CreateTIAInstance(enableGuiTIA: true);
+
+                // Получаем ссылку на созданный экземпляр TIA (через приведение)
+                var instance = ((TIASessionService)tia.SessionService).Instance;
 
                 string projectName = "TestProject";
                 string projectPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TIA_Projects");
@@ -28,10 +30,15 @@ namespace SmarTIAtumProjeX.Test
                 if (!Directory.Exists(projectPath))
                     Directory.CreateDirectory(projectPath);
 
-                tia.CreateTIAprject(projectPath, projectName);
+                // Создаём проект
+                var project = new ProjectService(instance).CreateProject(projectPath, projectName);
                 Console.WriteLine($"[DIR] Проект создан: {projectName}");
 
+                // Инициализируем фасад TIAConnector
+                tia.Initialize(instance, project);
+
                 Console.WriteLine($"[INFO] Создаём Идентификаторы устройств и модулей:");
+                
                 DeviceModel plc = new DeviceModel
                 {
                     DeviceName = "MDC2_K001",
@@ -150,21 +157,23 @@ namespace SmarTIAtumProjeX.Test
                 Logger.Create($"DeviceItem: {gsdOdotIOmodule1.DeviceName} TypeId: {gsdOdotIOmodule1.TypeIdentifier}");
 
 
-                tia.AddDeviceToProject(plc);
-                tia.AddDeviceToProject(scalance);
-                tia.AddDeviceToProject(etStation);
-                //tia.AddDeviceToProject(gsdScaner);
-                Device deviceOdotHeadModule1 = tia.AddDeviceToProject(gsdOdotHeadModule1);
-                tia.AddDeviceItemToDevice(deviceOdotHeadModule1, gsdOdotImodule1 );
-                tia.AddDeviceItemToDevice(deviceOdotHeadModule1, gsdOdotImodule2);
-                tia.AddDeviceItemToDevice(deviceOdotHeadModule1, gsdOdotOmodule1);
-                tia.AddDeviceItemToDevice(deviceOdotHeadModule1, gsdOdotIOmodule1);
+                tia.DeviceService.AddDeviceToProject(plc);
+                tia.DeviceService.AddDeviceToProject(scalance);
+                tia.DeviceService.AddDeviceToProject(etStation);
 
-                Device deviceOdotHeadModule2 = tia.AddDeviceToProject(gsdOdotHeadModule2);
-                tia.AddDeviceItemToDevice(deviceOdotHeadModule2, gsdOdotImodule1);
-                tia.AddDeviceItemToDevice(deviceOdotHeadModule2, gsdOdotImodule2);
-                tia.AddDeviceItemToDevice(deviceOdotHeadModule2, gsdOdotOmodule1);
-                tia.AddDeviceItemToDevice(deviceOdotHeadModule2, gsdOdotIOmodule1);
+                //tia.AddDeviceToProject(gsdScaner);
+
+                var odot1 = tia.DeviceService.AddDeviceToProject(gsdOdotHeadModule1);
+                tia.DeviceService.AddDeviceItemToDevice(odot1, gsdOdotImodule1);
+                tia.DeviceService.AddDeviceItemToDevice(odot1, gsdOdotImodule2);
+                tia.DeviceService.AddDeviceItemToDevice(odot1, gsdOdotOmodule1);
+                tia.DeviceService.AddDeviceItemToDevice(odot1, gsdOdotIOmodule1);
+
+                var odot2 = tia.DeviceService.AddDeviceToProject(gsdOdotHeadModule2);
+                tia.DeviceService.AddDeviceItemToDevice(odot2, gsdOdotImodule1);
+                tia.DeviceService.AddDeviceItemToDevice(odot2, gsdOdotImodule2);
+                tia.DeviceService.AddDeviceItemToDevice(odot2, gsdOdotOmodule1);
+                tia.DeviceService.AddDeviceItemToDevice(odot2, gsdOdotIOmodule1);
 
                 Console.WriteLine("[OK] Устройства успешно добавлены в проект.");
             }
