@@ -54,5 +54,8 @@
     <Compile Include="TIAConnector.cs" />
     <Compile Include="Utility\Logger.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
