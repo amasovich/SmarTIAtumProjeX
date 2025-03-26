@@ -45,17 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\IDeviceService.cs" />
+    <Compile Include="Interface\IProjectService.cs" />
     <Compile Include="Interface\ITIAConnector.cs" />
+    <Compile Include="Interface\ITIASessionService.cs" />
     <Compile Include="Model\DeviceClassType.cs" />
+    <Compile Include="Service\DeviceService.cs" />
+    <Compile Include="Service\ProjectService.cs" />
+    <Compile Include="Service\TIASessionService.cs" />
+    <Compile Include="TIAConnector.cs" />
     <Compile Include="Utility\DeviceBrowser.cs" />
     <Compile Include="Utility\DeviceClassifier.cs" />
     <Compile Include="Model\DeviceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TIAConnector.cs" />
     <Compile Include="Utility\Logger.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Service\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

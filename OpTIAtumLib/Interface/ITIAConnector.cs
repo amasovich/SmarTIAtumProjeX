@@ -1,19 +1,44 @@
-﻿using OpTIAtumLib.Model;
-using Siemens.Engineering.HW;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Siemens.Engineering;
+using OpTIAtumLib.Interface;
 
 namespace OpTIAtumLib.Interface
 {
-    internal interface ITIAConnector
+    /// <summary>
+    /// Интерфейс фасада для доступа к сервисам TIA Portal и управления проектом.
+    /// </summary>
+    public interface ITIAConnector
     {
-        void CreateTIAinstance(bool enableGuiTIA);
-        void CreateTIAprject(string projectPath, string projectName);
-        void OpenTIAproject(string projectPath, string projectName);
-        Device AddDeviceToProject(DeviceModel deviceModel);
-        void AddDeviceItemToDevice(Device device, DeviceModel moduleModel);
+        /// <summary>
+        /// Экземпляр TIA Portal, используемый для работы с API Openness.
+        /// </summary>
+        TiaPortal Instance { get; }
+
+        /// <summary>
+        /// Активный проект TIA Portal (открытый или созданный).
+        /// </summary>
+        Project Project { get; }
+
+        /// <summary>
+        /// Сервис управления сессией TIA Portal и регистрацией в whitelist.
+        /// </summary>
+        ITIASessionService SessionService { get; }
+
+        /// <summary>
+        /// Сервис для создания и открытия проектов TIA Portal.
+        /// </summary>
+        IProjectService ProjectService { get; }
+
+        /// <summary>
+        /// Сервис для добавления устройств и модулей в проект.
+        /// </summary>
+        IDeviceService DeviceService { get; }
+
+        /// <summary>
+        /// Метод инициализации фасада после запуска TIA и открытия/создания проекта.
+        /// </summary>
+        /// <param name="instance">Экземпляр TIA Portal</param>
+        /// <param name="project">Проект TIA Portal</param>
+        void Initialize(TiaPortal instance, Project project);
     }
 }
+
