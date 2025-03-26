@@ -58,6 +58,7 @@
     <Compile Include="Utility\DeviceClassifier.cs" />
     <Compile Include="Model\DeviceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\DeviceInspector.cs" />
     <Compile Include="Utility\Logger.cs" />
   </ItemGroup>
   <ItemGroup />

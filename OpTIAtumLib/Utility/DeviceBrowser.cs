@@ -1,60 +1,95 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using OpTIAtumLib.Model;
-using OpTIAtumLib.Utility;
+﻿
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
+using Siemens.Engineering.HW.Features;
+using OpTIAtumLib.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace OpTIAtumLib.Tools
+namespace OpTIAtumLib.Utility
 {
     /// <summary>
-    /// Вспомогательный класс для получения информации об устройствах из проекта TIA.
+    /// Утилита для извлечения информации об устройствах и модулях из проекта TIA.
     /// </summary>
-    internal static class DeviceBrowser
+    public static class DeviceBrowser
     {
         /// <summary>
-        /// Возвращает список всех устройств проекта как список DeviceModel.
+        /// Возвращает список моделей устройств на основе TypeIdentifier и вложенных DeviceItem.
         /// </summary>
-        /// <param name="project">Открытый проект TIA</param>
-        /// <returns>Список устройств в виде моделей DeviceModel</returns>
         public static List<DeviceModel> GetDeviceModels(Project project)
         {
             var result = new List<DeviceModel>();
 
-            if (project == null)
-                return result;
-
             foreach (var device in project.Devices)
             {
-                string order = GetAttribute(device, "OrderNumber");
-                string version = GetAttribute(device, "Version");
+                string station = device.Name;
 
-                var model = new DeviceModel
+                foreach (DeviceItem topItem in device.DeviceItems)
                 {
-                    DeviceName = device.Name,
-                    OrderNumber = order,
-                    FirmwareVersion = version,
-                    Station = device.Name, // можно заменить, если есть более точное имя станции
-                    ClassType = DeviceClassifier.DetectClassType(order)
-                };
+                    foreach (var deviceItem in GetAllDeviceItems(topItem))
+                    {
+                        string typeIdentifier = deviceItem.TypeIdentifier;
+                        string orderNumber = null;
+                        string firmwareVersion = null;
+                        string gsdName = null;
+                        string gsdType = null;
+                        string gsdId = null;
 
-                result.Add(model);
+                        if (!string.IsNullOrEmpty(typeIdentifier) && typeIdentifier.StartsWith("OrderNumber:"))
+                        {
+                            var parts = typeIdentifier.Replace("OrderNumber:", "").Split('/');
+                            orderNumber = parts.ElementAtOrDefault(0);
+                            firmwareVersion = parts.ElementAtOrDefault(1);
+                        }
+                        else if (!string.IsNullOrEmpty(typeIdentifier) && typeIdentifier.StartsWith("GSD:"))
+                        {
+                            var parts = typeIdentifier.Replace("GSD:", "").Split('/');
+                            gsdName = parts.ElementAtOrDefault(0);
+                            gsdType = parts.ElementAtOrDefault(1);
+                            gsdId = parts.ElementAtOrDefault(2);
+                        }
+
+                        var model = new DeviceModel
+                        {
+                            Station = station,
+                            DeviceName = deviceItem.Name,
+                            OrderNumber = orderNumber,
+                            FirmwareVersion = firmwareVersion,
+                            GsdName = gsdName,
+                            GsdType = gsdType,
+                            GsdId = gsdId,
+                            PositionNumber = deviceItem.PositionNumber,
+                            ClassType = ConvertClassification(deviceItem.Classification)
+                        };
+
+                        result.Add(model);
+                    }
+                }
             }
 
             return result;
         }
 
-        private static string GetAttribute(Device device, string attributeName)
+        /// <summary>
+        /// Рекурсивный обход всех DeviceItem.
+        /// </summary>
+        private static IEnumerable<DeviceItem> GetAllDeviceItems(DeviceItem item)
         {
-            try
-            {
-                var item = device.DeviceItems.FirstOrDefault();
-                if (item != null && item.GetAttribute(attributeName) is string value)
-                    return value;
-            }
-            catch { }
+            yield return item;
+            foreach (var child in item.DeviceItems)
+                foreach (var nested in GetAllDeviceItems(child))
+                    yield return nested;
+        }
 
-            return string.Empty;
+        /// <summary>
+        /// Преобразование из Openness классификации в DeviceClassType проекта.
+        /// </summary>
+        private static DeviceClassType ConvertClassification(DeviceItemClassifications classification)
+        {
+            return Enum.TryParse(classification.ToString(), true, out DeviceClassType result)
+                ? result
+                : DeviceClassType.Undefined;
         }
     }
 }

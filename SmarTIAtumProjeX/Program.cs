@@ -18,6 +18,7 @@ namespace SmarTIAtumProjeX
             TestRunner.Run();
             //DeviceClassifierTest.Run();
             //TestDeviceBrowse.Run();
+
             //Console.ReadKey(); // Ожидание для просмотра результатов
 
         }

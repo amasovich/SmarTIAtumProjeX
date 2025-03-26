@@ -1,7 +1,9 @@
 ﻿using OpTIAtumLib;
 using OpTIAtumLib.Model;
 using OpTIAtumLib.Services;
+using OpTIAtumLib.Utility;
 using System;
+using System.Reflection;
 
 namespace SmarTIAtumProjeX.Test
 {
@@ -31,11 +33,19 @@ namespace SmarTIAtumProjeX.Test
                 // Инициализация TIAConnector с открытым проектом
                 tia.Initialize(instance, project);
 
-                // Получение списка устройств через сервис
-                var devices = tia.DeviceService.GetDevices();
+                // Получение списка всех свойств устройств и модулей DeviceItem
+                //DeviceInspector.DumpDeviceAndItemProperties(tia.Project);
+
+                // Получение списка устройств
+                var devices = DeviceBrowser.GetDeviceModels(tia.Project);
+
                 foreach (var dev in devices)
                 {
-                    Console.WriteLine($"[OK] {dev.DeviceName} → {dev.OrderNumber}, {dev.FirmwareVersion}, Class: {dev.ClassType}");
+                    string typeInfo = !string.IsNullOrWhiteSpace(dev.OrderNumber)
+                        ? $"{dev.OrderNumber} / {dev.FirmwareVersion}"
+                        : $"{dev.GsdName} / {dev.GsdType} / {dev.GsdId}";
+
+                    Console.WriteLine($"[OK] {dev.Station} → {dev.DeviceName} → {typeInfo}, Slot: {dev.PositionNumber}, Class: {dev.ClassType}");
                 }
             }
             catch (Exception ex)
@@ -48,4 +58,3 @@ namespace SmarTIAtumProjeX.Test
         }
     }
 }
-

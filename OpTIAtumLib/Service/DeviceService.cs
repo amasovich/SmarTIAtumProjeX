@@ -80,14 +80,5 @@ namespace OpTIAtumLib.Services
                 throw;
             }
         }
-
-        /// <inheritdoc/>
-        public List<DeviceModel> GetDevices()
-        {
-            if (_project == null)
-                return new List<DeviceModel>();
-
-            return Tools.DeviceBrowser.GetDeviceModels(_project);
-        }
     }
 }

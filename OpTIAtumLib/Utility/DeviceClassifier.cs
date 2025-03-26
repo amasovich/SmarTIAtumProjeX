@@ -22,7 +22,7 @@ namespace OpTIAtumLib.Utility
                 orderNumber.StartsWith("6ES7 61") ||
                 orderNumber.StartsWith("6ES7 31") || // S7-300
                 orderNumber.StartsWith("6ES7 41"))   // S7-400
-                return DeviceClassType.Plc;
+                return DeviceClassType.CPU;
 
             // HMI панели
             if (orderNumber.StartsWith("6AV2") ||    // Comfort Panel

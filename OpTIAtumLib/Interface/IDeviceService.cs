@@ -42,12 +42,6 @@ namespace OpTIAtumLib.Interface
         /// имя устройства и номер позиции (слота), в которую следует вставить модуль.
         /// </param>
         void AddDeviceItemToDevice(Device device, DeviceModel moduleModel);
-
-        /// <summary>
-        /// Возвращает список всех устройств проекта в виде моделей <see cref="DeviceModel"/>.
-        /// </summary>
-        /// <returns>Список моделей устройств, добавленных в текущий проект.</returns>
-        List<DeviceModel> GetDevices();
     }
 }
 

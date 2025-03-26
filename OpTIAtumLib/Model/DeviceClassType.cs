@@ -9,7 +9,7 @@
         Undefined = 0,
 
         /// <summary>Контроллер (PLC)</summary>
-        Plc,
+        CPU,
 
         /// <summary>Панель оператора или HMI</summary>
         Hmi,
@@ -25,6 +25,9 @@
 
         /// <summary>Сенсоры, энкодеры, детекторы</summary>
         DetectingMonitoring,
+
+        /// <summary>Головные устройсва модулей ввода-вывода</summary>
+        HeadModule,
 
         /// <summary>Модули ввода-вывода</summary>
         IO,

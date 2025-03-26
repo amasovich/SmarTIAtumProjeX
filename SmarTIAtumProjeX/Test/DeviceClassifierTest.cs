@@ -13,7 +13,7 @@ namespace SmarTIAtumProjeX.Test
 
             var testCases = new Dictionary<string, DeviceClassType>
             {
-                { "6ES7 518-4FP00-0AB0", DeviceClassType.Plc },
+                { "6ES7 518-4FP00-0AB0", DeviceClassType.CPU },
                 { "6ES7 155-6AU01-0BN0", DeviceClassType.IO },
                 { "6AV2123-4DB03-0AX0", DeviceClassType.Hmi },
                 { "6AV7861-0AA00-1AA0", DeviceClassType.PcSystem },

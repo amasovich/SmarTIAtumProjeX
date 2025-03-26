@@ -70,17 +70,17 @@ namespace SmarTIAtumProjeX.Test
                 };
                 Logger.Create($"Device: {scalance.DeviceName} TypeId: {scalance.TypeIdentifier}");
 
-                //DeviceModel gsdScaner = new DeviceModel
-                //{
-                //    DeviceName = "Scaner_13_040",
-                //    Station = "GSD_Scan_13_040",
-                //    GsdName = "GSDML-V2.34-HIKVISION-MV-20210719.XML",
-                //    GsdType = "DAP",
-                //    GsdId = "DAP3",
-                //    IncludeFailsafe = false,
-                //    PositionNumber = 0
-                //};
-                //Logger.Create($"Device: {gsdScaner.DeviceName} TypeId: {gsdScaner.TypeIdentifier}");
+                DeviceModel gsdScaner = new DeviceModel
+                {
+                    DeviceName = "Scaner_13_040",
+                    Station = "GSD device_3",
+                    GsdName = "GSDML-V2.34-HIKVISION-MV-20210719.XML",
+                    GsdType = "R",
+                    GsdId = "DAP2",
+                    IncludeFailsafe = false,
+                    PositionNumber = 0
+                };
+                Logger.Create($"Device: {gsdScaner.DeviceName} TypeId: {gsdScaner.TypeIdentifier}");
 
                 DeviceModel gsdOdotHeadModule1 = new DeviceModel
                 {
@@ -159,7 +159,7 @@ namespace SmarTIAtumProjeX.Test
                 tia.DeviceService.AddDeviceToProject(scalance);
                 tia.DeviceService.AddDeviceToProject(etStation);
 
-                //tia.AddDeviceToProject(gsdScaner);
+                tia.DeviceService.AddDeviceToProject(gsdScaner);
 
                 var odot1 = tia.DeviceService.AddDeviceToProject(gsdOdotHeadModule1);
                 tia.DeviceService.AddDeviceItemToDevice(odot1, gsdOdotImodule1);
