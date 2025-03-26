@@ -2,9 +2,7 @@
 using OpTIAtumLib.Model;
 using OpTIAtumLib.Services;
 using OpTIAtumLib.Utility;
-using Siemens.Engineering.HW;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace SmarTIAtumProjeX.Test
