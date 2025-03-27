@@ -48,6 +48,8 @@
     <Compile Include="Service\Devices\IDeviceService.cs" />
     <Compile Include="Service\Projects\IProjectService.cs" />
     <Compile Include="Core\ITIAConnector.cs" />
+    <Compile Include="Service\Subnets\ISubnetService.cs" />
+    <Compile Include="Service\Subnets\SubnetService.cs" />
     <Compile Include="Service\TIASession\ITIASessionService.cs" />
     <Compile Include="Model\DeviceClassType.cs" />
     <Compile Include="Service\Devices\DeviceService.cs" />
