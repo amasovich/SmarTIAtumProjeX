@@ -1,4 +1,4 @@
-﻿namespace OpTIAtumLib.Interface
+﻿namespace OpTIAtumLib.Service.TIASession
 {
     /// <summary>
     /// Интерфейс для сервиса управления экземпляром TIA Portal и whitelist.

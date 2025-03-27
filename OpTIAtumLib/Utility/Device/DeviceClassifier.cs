@@ -1,6 +1,6 @@
 ﻿using OpTIAtumLib.Model;
 
-namespace OpTIAtumLib.Utility
+namespace OpTIAtumLib.Utility.Device
 {
     public static class DeviceClassifier
     {

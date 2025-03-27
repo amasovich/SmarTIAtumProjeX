@@ -1,9 +1,10 @@
-﻿using OpTIAtumLib.Interface;
-using OpTIAtumLib.Services;
+﻿using System;
 using Siemens.Engineering;
-using System;
+using OpTIAtumLib.Service.TIASession;
+using OpTIAtumLib.Service.Projects;
+using OpTIAtumLib.Service.Devices;
 
-namespace OpTIAtumLib
+namespace OpTIAtumLib.Core
 {
     /// <summary>
     /// Фасад для работы с TIA Portal. Делегирует задачи соответствующим сервисам.

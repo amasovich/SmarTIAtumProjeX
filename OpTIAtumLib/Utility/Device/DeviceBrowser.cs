@@ -1,13 +1,11 @@
-﻿
-using Siemens.Engineering;
+﻿using Siemens.Engineering;
 using Siemens.Engineering.HW;
-using Siemens.Engineering.HW.Features;
 using OpTIAtumLib.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpTIAtumLib.Utility
+namespace OpTIAtumLib.Utility.Device
 {
     /// <summary>
     /// Утилита для извлечения информации об устройствах и модулях из проекта TIA.

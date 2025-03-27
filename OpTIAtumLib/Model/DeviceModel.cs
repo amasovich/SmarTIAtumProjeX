@@ -1,5 +1,4 @@
-﻿using OpTIAtumLib.Utility;
-using Siemens.Engineering.HW.Features;
+﻿using OpTIAtumLib.Utility.Device;
 
 namespace OpTIAtumLib.Model
 {
@@ -17,9 +16,6 @@ namespace OpTIAtumLib.Model
         public string GsdId { get; set; }
         public bool IncludeFailsafe { get; set; }
         public int PositionNumber { get; set; }
-
-
-        //public string TypeIdentifier => $"OrderNumber:{OrderNumber}/{FirmwareVersion}";
 
         public string TypeIdentifier =>
         !string.IsNullOrWhiteSpace(GsdName) && !string.IsNullOrWhiteSpace(GsdType)

@@ -1,9 +1,11 @@
-﻿using OpTIAtumLib;
-using OpTIAtumLib.Model;
-using OpTIAtumLib.Services;
-using OpTIAtumLib.Utility;
-using System;
+﻿using System;
 using System.IO;
+using OpTIAtumLib.Core;
+using OpTIAtumLib.Model;
+using OpTIAtumLib.Service.TIASession;
+using OpTIAtumLib.Service.Projects;
+using OpTIAtumLib.Utility.Logger;
+
 
 namespace SmarTIAtumProjeX.Test
 {
@@ -35,8 +37,8 @@ namespace SmarTIAtumProjeX.Test
                 // Инициализируем фасад TIAConnector
                 tia.Initialize(instance, project);
 
-                Console.WriteLine($"[INFO] Создаём Идентификаторы устройств и модулей:");
-                
+                Logger.Info($"Создаём Идентификаторы устройств и модулей:");
+
                 DeviceModel plc = new DeviceModel
                 {
                     DeviceName = "MDC2_K001",
@@ -46,7 +48,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 0
                 };
-                Logger.Create($"Device: {plc.DeviceName} TypeId: {plc.TypeIdentifier}");
+                Logger.Add($"Device: {plc.DeviceName} TypeId: {plc.TypeIdentifier}");
 
                 tia.DeviceService.AddDeviceToProject(plc);
 
@@ -59,7 +61,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 0
                 };
-                Logger.Create($"Device: {etHeadStation.DeviceName} TypeId: {etHeadStation.TypeIdentifier}");
+                Logger.Add($"Device: {etHeadStation.DeviceName} TypeId: {etHeadStation.TypeIdentifier}");
                 
                 var etStation = tia.DeviceService.AddDeviceToProject(etHeadStation);
 
@@ -72,7 +74,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 1
                 };
-                Logger.Create($"Device: {etDi_1.DeviceName} TypeId: {etDi_1.TypeIdentifier}");
+                Logger.Add($"Device: {etDi_1.DeviceName} TypeId: {etDi_1.TypeIdentifier}");
                 
                 tia.DeviceService.AddDeviceItemToDevice(etStation, etDi_1);
 
@@ -85,7 +87,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 2
                 };
-                Logger.Create($"Device: {etFDi_1.DeviceName} TypeId: {etFDi_1.TypeIdentifier}");
+                Logger.Add($"Device: {etFDi_1.DeviceName} TypeId: {etFDi_1.TypeIdentifier}");
 
                 tia.DeviceService.AddDeviceItemToDevice(etStation, etFDi_1);
 
@@ -98,7 +100,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 3
                 };
-                Logger.Create($"Device: {etDq_1.DeviceName} TypeId: {etDq_1.TypeIdentifier}");
+                Logger.Add($"Device: {etDq_1.DeviceName} TypeId: {etDq_1.TypeIdentifier}");
 
                 tia.DeviceService.AddDeviceItemToDevice(etStation, etDq_1);
 
@@ -111,7 +113,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 4
                 };
-                Logger.Create($"Device: {etFDq_1.DeviceName} TypeId: {etFDq_1.TypeIdentifier}");
+                Logger.Add($"Device: {etFDq_1.DeviceName} TypeId: {etFDq_1.TypeIdentifier}");
                 
                 tia.DeviceService.AddDeviceItemToDevice(etStation, etFDq_1);
 
@@ -124,7 +126,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 5
                 };
-                Logger.Create($"Device: {etServerModule_1.DeviceName} TypeId: {etServerModule_1.TypeIdentifier}");
+                Logger.Add($"Device: {etServerModule_1.DeviceName} TypeId: {etServerModule_1.TypeIdentifier}");
 
                 tia.DeviceService.AddDeviceItemToDevice(etStation, etServerModule_1);
 
@@ -137,49 +139,65 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 0
                 };
-                Logger.Create($"Device: {scalance.DeviceName} TypeId: {scalance.TypeIdentifier}");
+                Logger.Add($"Device: {scalance.DeviceName} TypeId: {scalance.TypeIdentifier}");
 
                 tia.DeviceService.AddDeviceToProject(scalance);
 
-                //DeviceModel gsdScaner = new DeviceModel
-                //{
-                //    DeviceName = "Scaner_13_040",
-                //    Station = "GSD device_3",
-                //    GsdName = "GSDML-V2.34-HIKVISION-MV-20210719.XML",
-                //    GsdType = "R",
-                //    GsdId = "DAP2",
-                //    IncludeFailsafe = false,
-                //    PositionNumber = 0
-                //};
-                //Logger.Create($"Device: {gsdScaner.DeviceName} TypeId: {gsdScaner.TypeIdentifier}");
+                DeviceModel gsdScaner1 = new DeviceModel
+                {
+                    DeviceName = "Scaner_13_040",
+                    Station = "HIKVISION-MV_1",
+                    GsdName = "GSDML-V2.34-HIKVISION-MV-20210719.XML",
+                    GsdType = "DAP",
+                    GsdId = "DAP 3",
+                    IncludeFailsafe = false,
+                    PositionNumber = 0
+                };
+                Logger.Add($"Device: {gsdScaner1.DeviceName} TypeId: {gsdScaner1.TypeIdentifier}");
+
+                tia.DeviceService.AddDeviceToUngrouped(gsdScaner1);
+
+                DeviceModel gsdScaner2 = new DeviceModel
+                {
+                    DeviceName = "Scaner_13_100",
+                    Station = "HIKVISION-MV_2",
+                    GsdName = "GSDML-V2.34-HIKVISION-MV-20210719.XML",
+                    GsdType = "DAP",
+                    GsdId = "DAP 3",
+                    IncludeFailsafe = false,
+                    PositionNumber = 0
+                };
+                Logger.Add($"Device: {gsdScaner2.DeviceName} TypeId: {gsdScaner2.TypeIdentifier}");
+
+                tia.DeviceService.AddDeviceToUngrouped(gsdScaner2);
 
                 DeviceModel gsdOdotHeadModule1 = new DeviceModel
                 {
                     DeviceName = "TB09_010_K002",
-                    Station = "GSD device_1",
+                    Station = "ODOT-BN8032_1",
                     GsdName = "GSDML-V2.33-ODOT-BN8032-20230911.XML",
                     GsdType = "DAP",
                     GsdId = "DAP1",
                     IncludeFailsafe = false,
                     PositionNumber = 0
                 };
-                Logger.Create($"Device: {gsdOdotHeadModule1.DeviceName} TypeId: {gsdOdotHeadModule1.TypeIdentifier}");
+                Logger.Add($"Device: {gsdOdotHeadModule1.DeviceName} TypeId: {gsdOdotHeadModule1.TypeIdentifier}");
 
-                var odot1 = tia.DeviceService.AddDeviceToProject(gsdOdotHeadModule1);
+                var odot1 = tia.DeviceService.AddDeviceToUngrouped(gsdOdotHeadModule1);
 
                 DeviceModel gsdOdotHeadModule2 = new DeviceModel
                 {
                     DeviceName = "TB09_070_K002",
-                    Station = "GSD device_2",
+                    Station = "ODOT-BN8032_2",
                     GsdName = "GSDML-V2.33-ODOT-BN8032-20230911.XML",
                     GsdType = "DAP",
                     GsdId = "DAP1",
                     IncludeFailsafe = false,
                     PositionNumber = 0
                 };
-                Logger.Create($"Device: {gsdOdotHeadModule2.DeviceName} TypeId: {gsdOdotHeadModule2.TypeIdentifier}");
+                Logger.Add($"Device: {gsdOdotHeadModule2.DeviceName} TypeId: {gsdOdotHeadModule2.TypeIdentifier}");
 
-                var odot2 = tia.DeviceService.AddDeviceToProject(gsdOdotHeadModule2);
+                var odot2 = tia.DeviceService.AddDeviceToUngrouped(gsdOdotHeadModule2);
 
                 DeviceModel gsdOdotImodule1 = new DeviceModel
                 {
@@ -191,7 +209,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 1
                 };
-                Logger.Create($"DeviceItem: {gsdOdotImodule1.DeviceName} TypeId: {gsdOdotImodule1.TypeIdentifier}");
+                Logger.Add($"DeviceItem: {gsdOdotImodule1.DeviceName} TypeId: {gsdOdotImodule1.TypeIdentifier}");
 
                 DeviceModel gsdOdotImodule2 = new DeviceModel
                 {
@@ -203,7 +221,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 2
                 };
-                Logger.Create($"DeviceItem: {gsdOdotImodule2.DeviceName} TypeId: {gsdOdotImodule2.TypeIdentifier}");
+                Logger.Add($"DeviceItem: {gsdOdotImodule2.DeviceName} TypeId: {gsdOdotImodule2.TypeIdentifier}");
 
                 DeviceModel gsdOdotOmodule1 = new DeviceModel
                 {
@@ -215,7 +233,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 3
                 };
-                Logger.Create($"DeviceItem: {gsdOdotOmodule1.DeviceName} TypeId: {gsdOdotOmodule1.TypeIdentifier}");
+                Logger.Add($"DeviceItem: {gsdOdotOmodule1.DeviceName} TypeId: {gsdOdotOmodule1.TypeIdentifier}");
 
                 DeviceModel gsdOdotIOmodule1 = new DeviceModel
                 {
@@ -227,7 +245,7 @@ namespace SmarTIAtumProjeX.Test
                     IncludeFailsafe = false,
                     PositionNumber = 4
                 };
-                Logger.Create($"DeviceItem: {gsdOdotIOmodule1.DeviceName} TypeId: {gsdOdotIOmodule1.TypeIdentifier}");
+                Logger.Add($"DeviceItem: {gsdOdotIOmodule1.DeviceName} TypeId: {gsdOdotIOmodule1.TypeIdentifier}");
 
                 tia.DeviceService.AddDeviceItemToDevice(odot1, gsdOdotImodule1);
                 tia.DeviceService.AddDeviceItemToDevice(odot1, gsdOdotImodule2);
@@ -239,23 +257,14 @@ namespace SmarTIAtumProjeX.Test
                 tia.DeviceService.AddDeviceItemToDevice(odot2, gsdOdotOmodule1);
                 tia.DeviceService.AddDeviceItemToDevice(odot2, gsdOdotIOmodule1);
 
-
-
-                //tia.DeviceService.AddDeviceToProject(gsdScaner);
-
-
-
-
-
-
                 Console.WriteLine("[OK] Устройства успешно добавлены в проект.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("[ERROR] Ошибка: " + ex.Message);
+                Logger.Debug("[ERROR] Ошибка: " + ex.Message);
             }
 
-            Console.WriteLine("[FINISH] Тест завершён. Нажмите любую клавишу...");
+            Logger.Info("Тест завершён. Нажмите любую клавишу...");
             Console.ReadKey();
         }
     }

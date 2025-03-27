@@ -1,10 +1,9 @@
 ﻿using Siemens.Engineering;
 using System;
 using System.IO;
-using OpTIAtumLib.Utility;
-using OpTIAtumLib.Interface;
+using OpTIAtumLib.Utility.Logger;
 
-namespace OpTIAtumLib.Services
+namespace OpTIAtumLib.Service.Projects
 {
     public class ProjectService : IProjectService
     {
@@ -25,7 +24,7 @@ namespace OpTIAtumLib.Services
                 targetDirectory.Create();
 
             var project = _tiaPortal.Projects.Create(targetDirectory, projectName);
-            Logger.Info($"Проект '{projectName}' успешно создан по пути '{projectPath}'.");
+            Logger.Create($"Проект '{projectName}' успешно создан по пути '{projectPath}'.");
             return project;
         }
 

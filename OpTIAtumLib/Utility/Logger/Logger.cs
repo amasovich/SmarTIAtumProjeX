@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace OpTIAtumLib.Utility
+namespace OpTIAtumLib.Utility.Logger
 {
     public static class Logger
     {
@@ -13,6 +13,8 @@ namespace OpTIAtumLib.Utility
         public static void Error(string message) => Log("ERROR", message);
         public static void Warn(string message) => Log("WARN", message);
         public static void Debug(string message) => Log("DEBUG", message);
+
+        public static void Add(string message) => Log("ADD", message);
         public static void Create(string message) => Log("CREATE", message);
 
         private static void Log(string level, string message)

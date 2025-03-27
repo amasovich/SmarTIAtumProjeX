@@ -1,7 +1,6 @@
 ﻿using Siemens.Engineering;
-using System;
 
-namespace OpTIAtumLib.Interface
+namespace OpTIAtumLib.Service.Projects
 {
     /// <summary>
     /// Интерфейс для сервиса управления проектами TIA Portal.

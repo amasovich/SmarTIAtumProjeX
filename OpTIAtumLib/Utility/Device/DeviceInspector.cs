@@ -3,7 +3,7 @@ using Siemens.Engineering.HW;
 using System;
 using System.Reflection;
 
-namespace OpTIAtumLib.Utility
+namespace OpTIAtumLib.Utility.Device
 {
     /// <summary>
     /// Утилита для анализа и вывода всех свойств устройств и модулей DeviceItem.

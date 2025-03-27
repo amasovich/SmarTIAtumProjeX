@@ -1,13 +1,11 @@
 ﻿using OpTIAtumLib.Model;
-using OpTIAtumLib.Utility;
+using OpTIAtumLib.Utility.Logger;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using OpTIAtumLib.Interface;
 
-namespace OpTIAtumLib.Services
+namespace OpTIAtumLib.Service.Devices
 {
     public class DeviceService : IDeviceService
     {
@@ -40,7 +38,7 @@ namespace OpTIAtumLib.Services
             try
             {
                 Device createdDevice = _project.Devices.CreateWithItem(typeIdentifier, deviceName, stationName);
-                Logger.Info($"Устройство '{deviceName}' успешно добавлено: {typeIdentifier} → Станция: {stationName}");
+                Logger.Create($"Устройство '{deviceName}' успешно добавлено: {typeIdentifier} → Станция: {stationName}");
                 return createdDevice;
             }
             catch (Exception ex)
@@ -72,7 +70,7 @@ namespace OpTIAtumLib.Services
             try
             {
                 Device createdDevice = targetGroup.Devices.CreateWithItem(typeIdentifier, deviceName, stationName);
-                Logger.Info($"Устройство '{deviceName}' успешно добавлено в группу '{targetGroup.Name}': {typeIdentifier} → Станция: {stationName}");
+                Logger.Create($"Устройство '{deviceName}' успешно добавлено в группу '{targetGroup.Name}': {typeIdentifier} → Станция: {stationName}");
                 return createdDevice;
             }
             catch (Exception ex)
@@ -106,7 +104,7 @@ namespace OpTIAtumLib.Services
                 var group = _project.UngroupedDevicesGroup;
                 Device createdDevice = group.Devices.CreateWithItem(typeIdentifier, deviceName, stationName);
 
-                Logger.Info($"Устройство '{deviceName}' добавлено в UngroupedDevicesGroup: {typeIdentifier} → Станция: {stationName}");
+                Logger.Create($"Устройство '{deviceName}' добавлено в UngroupedDevicesGroup: {typeIdentifier} → Станция: {stationName}");
                 return createdDevice;
             }
             catch (Exception ex)
@@ -138,7 +136,7 @@ namespace OpTIAtumLib.Services
             try
             {
                 DeviceItem module = parent.PlugNew(typeIdentifier, name, position);
-                Logger.Info($"Модуль '{name}' добавлен в устройство '{device.Name}' на позицию {position}");
+                Logger.Create($"Модуль '{name}' добавлен в устройство '{device.Name}' на позицию {position}");
             }
             catch (Exception ex)
             {

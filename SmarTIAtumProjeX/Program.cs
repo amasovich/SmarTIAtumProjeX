@@ -1,10 +1,6 @@
-﻿using SmarTIAtumProjeX.Test;
+﻿using System;
+using SmarTIAtumProjeX.Test;
 using SmarTIAtumProjeX.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmarTIAtumProjeX
 {
@@ -15,8 +11,8 @@ namespace SmarTIAtumProjeX
         {
             ConsoleWindowTweaks.SetAlwaysOnTop();
 
-            //TestRunner.Run();
-            TestRunAddScanDevice.Run();
+            TestRunner.Run();
+            //TestRunAddScanDevice.Run();
 
             //DeviceClassifierTest.Run();
             //TestDeviceBrowse.Run();

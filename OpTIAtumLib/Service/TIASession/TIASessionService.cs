@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
-using OpTIAtumLib.Interface;
-using OpTIAtumLib.Utility;
+using OpTIAtumLib.Utility.Logger;
 using Siemens.Engineering;
 using System;
 using System.Diagnostics;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 
-namespace OpTIAtumLib.Services
+namespace OpTIAtumLib.Service.TIASession
 {
     public class TIASessionService : ITIASessionService
     {

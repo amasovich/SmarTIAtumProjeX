@@ -1,9 +1,9 @@
-﻿using OpTIAtumLib;
-using OpTIAtumLib.Model;
-using OpTIAtumLib.Services;
-using OpTIAtumLib.Utility;
-using System;
-using System.Reflection;
+﻿using System;
+using OpTIAtumLib.Core;
+using OpTIAtumLib.Service.TIASession;
+using OpTIAtumLib.Service.Projects;
+using OpTIAtumLib.Utility.Device;
+
 
 namespace SmarTIAtumProjeX.Test
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpTIAtumLib.Model;
-using OpTIAtumLib.Utility;
+using OpTIAtumLib.Utility.Device;
 
 namespace SmarTIAtumProjeX.Test
 {

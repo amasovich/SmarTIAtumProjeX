@@ -1,9 +1,7 @@
-﻿using Siemens.Engineering;
-using System.Collections.Generic;
-using OpTIAtumLib.Model;
+﻿using OpTIAtumLib.Model;
 using Siemens.Engineering.HW;
 
-namespace OpTIAtumLib.Interface
+namespace OpTIAtumLib.Service.Devices
 {
     /// <summary>
     /// Интерфейс для сервиса добавления устройств и модулей в проект TIA Portal.

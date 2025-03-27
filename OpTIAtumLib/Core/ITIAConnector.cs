@@ -1,7 +1,9 @@
 ﻿using Siemens.Engineering;
-using OpTIAtumLib.Interface;
+using OpTIAtumLib.Service.TIASession;
+using OpTIAtumLib.Service.Projects;
+using OpTIAtumLib.Service.Devices;
 
-namespace OpTIAtumLib.Interface
+namespace OpTIAtumLib.Core
 {
     /// <summary>
     /// Интерфейс фасада для доступа к сервисам TIA Portal и управления проектом.
