@@ -51,6 +51,72 @@ namespace OpTIAtumLib.Services
         }
 
         /// <inheritdoc/>
+        public Device AddDeviceToProject(DeviceModel deviceModel, DeviceUserGroup targetGroup)
+        {
+            if (_project == null)
+                throw new InvalidOperationException("TIA Project не открыт. Сначала открой или создай проект.");
+
+            if (deviceModel == null)
+                throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
+
+            string typeIdentifier = deviceModel.TypeIdentifier;
+            string deviceName = deviceModel.DeviceName;
+            string stationName = deviceModel.Station;
+
+            if (string.IsNullOrWhiteSpace(typeIdentifier))
+                throw new ArgumentException("TypeIdentifier обязателен для создания устройства.");
+
+            if (string.IsNullOrWhiteSpace(deviceName))
+                throw new ArgumentException("DeviceName обязателен для создания устройства.");
+
+            try
+            {
+                Device createdDevice = targetGroup.Devices.CreateWithItem(typeIdentifier, deviceName, stationName);
+                Logger.Info($"Устройство '{deviceName}' успешно добавлено в группу '{targetGroup.Name}': {typeIdentifier} → Станция: {stationName}");
+                return createdDevice;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Ошибка при добавлении устройства '{deviceName}': {ex.Message}");
+                throw;
+            }
+        }
+
+        /// <inheritdoc/>
+        public Device AddDeviceToUngrouped(DeviceModel deviceModel)
+        {
+            if (_project == null)
+                throw new InvalidOperationException("TIA Project не открыт. Сначала открой или создай проект.");
+
+            if (deviceModel == null)
+                throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
+
+            string typeIdentifier = deviceModel.TypeIdentifier;
+            string deviceName = deviceModel.DeviceName;
+            string stationName = deviceModel.Station;
+
+            if (string.IsNullOrWhiteSpace(typeIdentifier))
+                throw new ArgumentException("TypeIdentifier обязателен для создания устройства.");
+
+            if (string.IsNullOrWhiteSpace(deviceName))
+                throw new ArgumentException("DeviceName обязателен для создания устройства.");
+
+            try
+            {
+                var group = _project.UngroupedDevicesGroup;
+                Device createdDevice = group.Devices.CreateWithItem(typeIdentifier, deviceName, stationName);
+
+                Logger.Info($"Устройство '{deviceName}' добавлено в UngroupedDevicesGroup: {typeIdentifier} → Станция: {stationName}");
+                return createdDevice;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Ошибка при добавлении устройства '{deviceName}' в UngroupedDevicesGroup: {ex.Message}");
+                throw;
+            }
+        }
+
+        /// <inheritdoc/>
         public void AddDeviceItemToDevice(Device device, DeviceModel moduleModel)
         {
             if (device == null)

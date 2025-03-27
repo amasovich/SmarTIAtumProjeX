@@ -15,7 +15,9 @@ namespace SmarTIAtumProjeX
         {
             ConsoleWindowTweaks.SetAlwaysOnTop();
 
-            TestRunner.Run();
+            //TestRunner.Run();
+            TestRunAddScanDevice.Run();
+
             //DeviceClassifierTest.Run();
             //TestDeviceBrowse.Run();
 
