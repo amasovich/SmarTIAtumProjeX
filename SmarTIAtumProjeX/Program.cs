@@ -11,11 +11,11 @@ namespace SmarTIAtumProjeX
         {
             ConsoleWindowTweaks.SetAlwaysOnTop();
 
-            //TestRunner.Run();
+            TestRunner.Run();
             //TestRunAddScanDevice.Run();
 
             //DeviceClassifierTest.Run();
-            TestDeviceBrowse.Run();
+            //TestDeviceBrowse.Run();
 
             //Console.ReadKey(); // Ожидание для просмотра результатов
 
