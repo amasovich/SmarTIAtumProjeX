@@ -50,6 +50,8 @@ namespace SmarTIAtumProjeX.Test
 
                     Console.WriteLine($"[OK] {dev.Station} → {dev.DeviceName} → {typeInfo}, Slot: {dev.PositionNumber}, Class: {dev.ClassType}");
                 }
+
+                //var devices = DeviceBrowser.GetUngroupedDeviceModels(tia.Project);
             }
             catch (Exception ex)
             {

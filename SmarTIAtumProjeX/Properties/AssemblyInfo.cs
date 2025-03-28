@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные с этой сборкой.
 [assembly: AssemblyTitle("SmarTIAtumProjeX")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SmarTIAtumProjeX")]
-[assembly: AssemblyCopyright("Copyright ©  2025")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyDescription("A test and demo application for the OpTIAtumLib library that implements automatic configuration generation in the TIA Portal.")]
+[assembly: AssemblyConfiguration("Debug")]
+[assembly: AssemblyCompany("SmarTIAtum Team")]
+[assembly: AssemblyProduct("SmarTIAtumProjeX - TIA Project Automation Tool")]
+[assembly: AssemblyCopyright("Copyright © Vladimir Bereznyak 2025")]
+[assembly: AssemblyTrademark("SmarTIAtum")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
