@@ -134,8 +134,8 @@ tia.DeviceService.AddDeviceToProject(new DeviceModel {
 
 ## 📚 Документация
 
-- [TIA Openness Getting Started](docs/GettingStarted.pdf)
-- [Siemens Programming Guideline](docs/ProgrammingGuideline.pdf)
+- [TIA Openness Manual](docs/TIAPortalOpennessManual_en-US.pdf)
+- [Siemens Programming Guideline](docs/SimaticProgrammingGuideline1200_1500_ru-RU.pdf)
 
 ## ✍️ Авторы
 
