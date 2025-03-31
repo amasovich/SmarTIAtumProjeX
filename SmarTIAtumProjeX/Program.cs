@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using Siemens.Engineering;
 using SmarTIAtumProjeX.Test;
 using SmarTIAtumProjeX.Utility;
 
@@ -25,11 +26,14 @@ namespace SmarTIAtumProjeX
         {
             ConsoleWindowTweaks.SetAlwaysOnTop();
 
-            TestRunner.Run();
+            //TestRunner.Run();
             //TestRunAddScanDevice.Run();
+
+            TestCreateProfinetSubnet.Run();
 
             //DeviceClassifierTest.Run();
             //TestDeviceBrowse.Run();
+            //TestDevicePropertiesBrowser.Run();
 
             //Console.ReadKey(); // Ожидание для просмотра результатов
 

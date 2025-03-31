@@ -1,13 +1,16 @@
-﻿using System;
-using OpTIAtumLib.Core;
-using OpTIAtumLib.Service.TIASession;
+﻿using OpTIAtumLib.Core;
 using OpTIAtumLib.Service.Projects;
+using OpTIAtumLib.Service.TIASession;
 using OpTIAtumLib.Utility.Device;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SmarTIAtumProjeX.Test
 {
-    internal class TestDeviceBrowse
+    internal class TestDevicePropertiesBrowser
     {
         public static void Run()
         {
@@ -37,37 +40,16 @@ namespace SmarTIAtumProjeX.Test
                 tia.Initialize(instance, project);
 
                 // Получение списка всех свойств устройств и модулей DeviceItem
-                //DeviceInspector.DumpDeviceAndItemProperties(tia.Project);
+                DevicePropertiesBrowser.DumpDeviceAndItemProperties(tia.Project);
+                DevicePropertiesBrowser.DumpUngroupDeviceAndItemProperties(tia.Project);
 
-                // Получение списка устройств
-                var devices = DeviceBrowser.GetDeviceModels(tia.Project);
-
-                foreach (var dev in devices)
-                {
-                    string typeInfo = !string.IsNullOrWhiteSpace(dev.OrderNumber)
-                        ? $"{dev.OrderNumber} / {dev.FirmwareVersion}"
-                        : $"{dev.GsdName} / {dev.GsdType} / {dev.GsdId}";
-
-                    Console.WriteLine($"[OK] {dev.Station} → {dev.DeviceName} → {typeInfo}, Slot: {dev.PositionNumber}, Class: {dev.ClassType}");
-                }
-
-                var ungroupDevices = DeviceBrowser.GetUngroupedDeviceModels(tia.Project);
-
-                foreach (var dev in ungroupDevices)
-                {
-                    string typeInfo = !string.IsNullOrWhiteSpace(dev.OrderNumber)
-                        ? $"{dev.OrderNumber} / {dev.FirmwareVersion}"
-                        : $"{dev.GsdName} / {dev.GsdType} / {dev.GsdId}";
-
-                    Console.WriteLine($"[OK] {dev.Station} → {dev.DeviceName} → {typeInfo}, Slot: {dev.PositionNumber}, Class: {dev.ClassType}");
-                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("[ERROR] Ошибка: " + ex.Message);
             }
 
-            Console.WriteLine("[FINISH] Все устройства выгружены. Нажмите любую клавишу...");
+            Console.WriteLine("[FINISH] Все свойства устройств выгружены. Нажмите любую клавишу...");
             Console.ReadKey();
         }
     }

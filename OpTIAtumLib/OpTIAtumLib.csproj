@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\SubnetModel.cs" />
     <Compile Include="Service\Devices\IDeviceService.cs" />
     <Compile Include="Service\Projects\IProjectService.cs" />
     <Compile Include="Core\ITIAConnector.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="Utility\Device\DeviceClassifier.cs" />
     <Compile Include="Model\DeviceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\Device\DeviceInspector.cs" />
+    <Compile Include="Utility\Device\DevicePropertiesBrowser.cs" />
     <Compile Include="Utility\Logger\Logger.cs" />
   </ItemGroup>
   <ItemGroup />

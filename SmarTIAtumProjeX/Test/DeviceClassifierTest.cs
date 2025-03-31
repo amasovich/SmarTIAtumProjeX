@@ -13,16 +13,16 @@ namespace SmarTIAtumProjeX.Test
 
             var testCases = new Dictionary<string, DeviceClassType>
             {
-                { "6ES7 518-4FP00-0AB0", DeviceClassType.CPU },
-                { "6ES7 155-6AU01-0BN0", DeviceClassType.IO },
-                { "6AV2123-4DB03-0AX0", DeviceClassType.Hmi },
-                { "6AV7861-0AA00-1AA0", DeviceClassType.PcSystem },
-                { "6GK7443-1EX30-0XE0", DeviceClassType.Network },
-                { "6SL3210-1PE23-8UL0", DeviceClassType.Drive },
-                { "6GT2002-0ED00", DeviceClassType.DetectingMonitoring },
-                { "6EP1437-3BA00", DeviceClassType.Power },
-                { "3RG4013-0AB00", DeviceClassType.Field },
-                { "XYZ123456789", DeviceClassType.Custom }
+                //{ "6ES7 518-4FP00-0AB0", DeviceClassType.CPU },
+                //{ "6ES7 155-6AU01-0BN0", DeviceClassType.IO },
+                //{ "6AV2123-4DB03-0AX0", DeviceClassType.Hmi },
+                //{ "6AV7861-0AA00-1AA0", DeviceClassType.PcSystem },
+                //{ "6GK7443-1EX30-0XE0", DeviceClassType.Network },
+                //{ "6SL3210-1PE23-8UL0", DeviceClassType.Drive },
+                //{ "6GT2002-0ED00", DeviceClassType.DetectingMonitoring },
+                //{ "6EP1437-3BA00", DeviceClassType.Power },
+                //{ "3RG4013-0AB00", DeviceClassType.Field },
+                //{ "XYZ123456789", DeviceClassType.Custom }
             };
 
             foreach (var test in testCases)

@@ -1,5 +1,6 @@
 ﻿using Siemens.Engineering;
 using Siemens.Engineering.HW;
+using Siemens.Engineering.HW.Features;
 using OpTIAtumLib.Model;
 using System;
 using System.Collections.Generic;
@@ -70,37 +71,13 @@ namespace OpTIAtumLib.Utility.Device
         }
 
         /// <summary>
-        /// Рекурсивный обход всех DeviceItem.
+        /// Возвращает список моделей устройств на основе TypeIdentifier и вложенных DeviceItem.
         /// </summary>
-        private static IEnumerable<DeviceItem> GetAllDeviceItems(DeviceItem item)
-        {
-            yield return item;
-            foreach (var child in item.DeviceItems)
-                foreach (var nested in GetAllDeviceItems(child))
-                    yield return nested;
-        }
-
-        /// <summary>
-        /// Преобразование из Openness классификации в DeviceClassType проекта.
-        /// </summary>
-        private static DeviceClassType ConvertClassification(DeviceItemClassifications classification)
-        {
-            return Enum.TryParse(classification.ToString(), true, out DeviceClassType result)
-                ? result
-                : DeviceClassType.Undefined;
-        }
-
         public static List<DeviceModel> GetUngroupedDeviceModels(Project project)
         {
             var result = new List<DeviceModel>();
 
-            // Пытаемся найти группу UngroupedDevicesGroup
-            var ungroupedGroup = project.DeviceGroups.Find("UngroupedDevicesGroup");
-            if (ungroupedGroup == null)
-                
-                return result;
-
-            foreach (var device in project.Devices)
+            foreach (var device in project.UngroupedDevicesGroup.Devices)
             {
                 string station = device.Name;
 
@@ -148,6 +125,84 @@ namespace OpTIAtumLib.Utility.Device
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Рекурсивный обход всех DeviceItem.
+        /// </summary>
+        public static IEnumerable<DeviceItem> GetAllDeviceItems(DeviceItem item)
+        {
+            yield return item;
+            foreach (var child in item.DeviceItems)
+                foreach (var nested in GetAllDeviceItems(child))
+                    yield return nested;
+        }
+
+        /// <summary>
+        /// Преобразование из встроенной классификации Openness в собственный тип <see cref="DeviceClassType"/>.
+        /// При значении <c>None</c> применяется автоопределение по OrderNumber.
+        /// </summary>
+        /// <param name="classification">Классификация от Openness (DeviceItemClassifications)</param>
+        /// <param name="orderNumber">OrderNumber устройства (опционально, для автоопределения)</param>
+        /// <returns>Соответствующий тип <see cref="DeviceClassType"/></returns>
+        public static DeviceClassType ConvertClassification(DeviceItemClassifications classification, string orderNumber = null)
+        {
+            // Попробуем напрямую по enum'у
+            if (Enum.TryParse(classification.ToString(), true, out DeviceClassType result) &&
+                result != DeviceClassType.None)
+            {
+                return result;
+            }
+
+            // Попробуем определить вручную через OrderNumber
+            return DeviceClassifier.DetectClassType(orderNumber);
+        }
+
+        public static void UpdateNetworkInterfaces(Project project, DeviceModel model)
+        {
+            if (project == null)
+                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
+
+            if (model == null)
+                throw new ArgumentNullException(nameof(model), "Модель устройства не может быть null.");
+
+            if (string.IsNullOrWhiteSpace(model.Station))
+                throw new ArgumentException("Имя станции (Station) в модели не задано.");
+
+            // Найти устройство в проекте по имени станции
+            var device = project.Devices.FirstOrDefault(d => d.Name == model.Station);
+            if (device == null)
+            {
+                Console.WriteLine($"Устройство с именем '{model.Station}' не найдено в проекте.");
+                return;
+            }
+
+            var interfaces = new List<string>();
+
+            foreach (var topItem in device.DeviceItems)
+            {
+                foreach (var deviceItem in DeviceBrowser.GetAllDeviceItems(topItem))
+                {
+                    var networkInterface = deviceItem.GetService<NetworkInterface>();
+                    if (networkInterface != null)
+                    {
+                        interfaces.Add(deviceItem.Name);
+                    }
+                }
+            }
+
+            // Обновление модели устройства списком найденных интерфейсов
+            model.NetworkInterfaceNames = interfaces;
+
+            // Вывод информации о найденных интерфейсах
+            if (interfaces.Count > 0)
+            {
+                Console.WriteLine($"Найдены сетевые интерфейсы для '{model.Station}': {string.Join(", ", interfaces)}");
+            }
+            else
+            {
+                Console.WriteLine($"Сетевые интерфейсы для '{model.Station}' не найдены.");
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ using Siemens.Engineering;
 using OpTIAtumLib.Service.TIASession;
 using OpTIAtumLib.Service.Projects;
 using OpTIAtumLib.Service.Devices;
+using OpTIAtumLib.Service.Subnets;
 
 namespace OpTIAtumLib.Core
 {
@@ -40,6 +41,8 @@ namespace OpTIAtumLib.Core
         /// <inheritdoc/>
         public IDeviceService DeviceService { get; private set; }
 
+        public ISubnetService SubnetService { get; private set; }
+
         /// <inheritdoc/>
         public TIAConnector()
         {
@@ -54,6 +57,7 @@ namespace OpTIAtumLib.Core
 
             ProjectService = new ProjectService(Instance);
             DeviceService = new DeviceService(Project);
+            SubnetService = new SubnetService(Project);
         }
     }
 }

@@ -1,32 +1,54 @@
-﻿using Siemens.Engineering;
+﻿using OpTIAtumLib.Model;
+using OpTIAtumLib.Utility.Device;
+using OpTIAtumLib.Utility.Logger;
+using Siemens.Engineering;
 using Siemens.Engineering.HW;
+using Siemens.Engineering.HW.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpTIAtumLib.Service.Subnets
 {
-    internal class SubnetService //: ISubnetService
+    internal class SubnetService : ISubnetService
     {
-        /// <inheritdoc/>
-        public Subnet CreateAndConnectSubnet(Node node, string subnetName)
+        private readonly Project _project;
+
+        public SubnetService(Project project)
         {
-            // Создание и подключение подсети к узлу
-            Subnet subnet = node.CreateAndConnectToSubnet(subnetName);
-            Console.WriteLine($"Подсеть '{subnetName}' успешно создана и подключена к узлу '{node.Name}'.");
-            return subnet;
+            _project = project ?? throw new ArgumentNullException(nameof(project));
         }
 
-        public Subnet CreateStandaloneSubnet(Project project, string subnetTypeIdentifier, string subnetName)
+        /// <inheritdoc/>
+        public Subnet CreateSubnet(SubnetModel subnetModel)
         {
-            // Получаем коллекцию подсетей из проекта
-            SubnetComposition subnets = project.Subnets;
-            // Создаем новую подсеть с заданным типом
-            Subnet newSubnet = subnets.Create(subnetTypeIdentifier, subnetName);
-            Console.WriteLine($"Подсеть '{subnetName}' типа '{subnetTypeIdentifier}' успешно создана в проекте.");
-            return newSubnet;
+            if (_project == null)
+                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
+
+            if (subnetModel == null)
+                throw new ArgumentNullException(nameof(subnetModel), "Модель устройства не может быть null.");
+
+            string subnetName = subnetModel.SubnetName;
+            string typeIdentifier = subnetModel.TypeIdentifier;
+
+            if (string.IsNullOrWhiteSpace(subnetName))
+                throw new ArgumentException("Имя подсети не может быть пустым.", nameof(subnetModel));
+
+            if (string.IsNullOrWhiteSpace(typeIdentifier))
+                throw new ArgumentException("Тип подсети не определён в модели.", nameof(subnetModel));
+
+            try
+            {
+                Subnet newSubnet = _project.Subnets.Create(typeIdentifier, subnetName);
+
+                Logger.Create($"Подсеть '{subnetName}' типа '{typeIdentifier}' успешно создана.");
+                return newSubnet;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Ошибка при создании подсети '{subnetName}': {ex.Message}");
+                throw;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace OpTIAtumLib.Utility.Device
     /// Утилита для анализа и вывода всех свойств устройств и модулей DeviceItem.
     /// Полезно для изучения структуры проекта и отладки.
     /// </summary>
-    public static class DeviceInspector
+    public static class DevicePropertiesBrowser
     {
         /// <summary>
         /// Выводит в консоль все доступные свойства устройств и модулей.
@@ -18,6 +18,25 @@ namespace OpTIAtumLib.Utility.Device
         public static void DumpDeviceAndItemProperties(Project project)
         {
             foreach (var device in project.Devices)
+            {
+                Console.WriteLine("=== DEVICE ===");
+                DumpProperties(device);
+
+                foreach (var item in device.DeviceItems)
+                {
+                    Console.WriteLine("  --- DEVICE ITEM (1 уровень) ---");
+                    DumpProperties(item, "  ");
+
+                    DumpDeviceItemsRecursive(item, "    ");
+                }
+
+                Console.WriteLine(); // Пустая строка между устройствами
+            }
+        }
+
+        public static void DumpUngroupDeviceAndItemProperties(Project project)
+        {
+            foreach (var device in project.UngroupedDevicesGroup.Devices)
             {
                 Console.WriteLine("=== DEVICE ===");
                 DumpProperties(device);

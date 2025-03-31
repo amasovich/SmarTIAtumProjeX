@@ -12,61 +12,61 @@ namespace OpTIAtumLib.Utility.Device
         public static DeviceClassType DetectClassType(string orderNumber)
         {
             if (string.IsNullOrWhiteSpace(orderNumber))
-                return DeviceClassType.Undefined;
+                return DeviceClassType.None;
 
             orderNumber = orderNumber.Trim().ToUpperInvariant();
 
-            // PLC
-            if (orderNumber.StartsWith("6ES7 21") || // S7-1200
-                orderNumber.StartsWith("6ES7 51") || // S7-1500
-                orderNumber.StartsWith("6ES7 61") ||
-                orderNumber.StartsWith("6ES7 31") || // S7-300
-                orderNumber.StartsWith("6ES7 41"))   // S7-400
-                return DeviceClassType.CPU;
+            //// PLC
+            //if (orderNumber.StartsWith("6ES7 21") || // S7-1200
+            //    orderNumber.StartsWith("6ES7 51") || // S7-1500
+            //    orderNumber.StartsWith("6ES7 61") ||
+            //    orderNumber.StartsWith("6ES7 31") || // S7-300
+            //    orderNumber.StartsWith("6ES7 41"))   // S7-400
+            //    return DeviceClassType.CPU;
 
-            // HMI панели
-            if (orderNumber.StartsWith("6AV2") ||    // Comfort Panel
-                orderNumber.StartsWith("6AV3") ||    // Mobile Panels
-                orderNumber.StartsWith("6AG1"))      // HMI панель Simatic Panel PC
-                return DeviceClassType.Hmi;
+            //// HMI панели
+            //if (orderNumber.StartsWith("6AV2") ||    // Comfort Panel
+            //    orderNumber.StartsWith("6AV3") ||    // Mobile Panels
+            //    orderNumber.StartsWith("6AG1"))      // HMI панель Simatic Panel PC
+            //    return DeviceClassType.HM;
 
-            // PC станции, IPC
-            if (orderNumber.StartsWith("6AV7") ||    // WinCC RT Advanced
-                orderNumber.StartsWith("6ES7 901"))  // IPC
-                return DeviceClassType.PcSystem;
+            //// PC станции, IPC
+            //if (orderNumber.StartsWith("6AV7") ||    // WinCC RT Advanced
+            //    orderNumber.StartsWith("6ES7 901"))  // IPC
+            //    return DeviceClassType.HM;
 
-            // Частотники, приводы и т.д.
-            if (orderNumber.StartsWith("6SL"))       // SINAMICS, приводы
-                return DeviceClassType.Drive;
+            //// Частотники, приводы и т.д.
+            //if (orderNumber.StartsWith("6SL"))       // SINAMICS, приводы
+            //    return DeviceClassType.CPU;
 
-            // Сетевые устройства (CP, Scalance, и т.д.)
-            if (orderNumber.StartsWith("6GK") ||     // Scalance
-                orderNumber.StartsWith("6GF") ||     // IO-Link
-                orderNumber.StartsWith("6ES7 95"))   // CP-модули
-                return DeviceClassType.Network;
+            //// Сетевые устройства (CP, Scalance, и т.д.)
+            //if (orderNumber.StartsWith("6GK") ||     // Scalance
+            //    orderNumber.StartsWith("6GF") ||     // IO-Link
+            //    orderNumber.StartsWith("6ES7 95"))   // CP-модули
+            //    return DeviceClassType.HM;
 
-            // Обнаружение и мониторинг
-            if (orderNumber.StartsWith("6GT") ||     // RFID
-                orderNumber.StartsWith("3RF"))       // Реле/Мониторинг
-                return DeviceClassType.DetectingMonitoring;
+            //// Обнаружение и мониторинг
+            //if (orderNumber.StartsWith("6GT") ||     // RFID
+            //    orderNumber.StartsWith("3RF"))       // Реле/Мониторинг
+            //    return DeviceClassType.HM;
 
-            // Модули ввода/вывода ET200 (IO)
-            if (orderNumber.StartsWith("6ES7 15") || // ET200SP
-                orderNumber.StartsWith("6ES7 14") || // ET200MP
-                orderNumber.StartsWith("6ES7 13"))   // ET200S
-                return DeviceClassType.IO;
+            //// Модули ввода/вывода ET200 (IO)
+            //if (orderNumber.StartsWith("6ES7 15") || // ET200SP
+            //    orderNumber.StartsWith("6ES7 14") || // ET200MP
+            //    orderNumber.StartsWith("6ES7 13"))   // ET200S
+            //    return DeviceClassType.HM;
 
-            // Источники питания
-            if (orderNumber.StartsWith("6EP"))       // SITOP, блоки питания
-                return DeviceClassType.Power;
+            //// Источники питания
+            //if (orderNumber.StartsWith("6EP"))       // SITOP, блоки питания
+            //    return DeviceClassType.CompactModule;
 
-            /// Полевые устройства (например, датчики AS-i, Profibus)
-            if (orderNumber.StartsWith("3RG") ||     // Датчики
-                orderNumber.StartsWith("7MH"))       // Весы, измерительные устройства
-                return DeviceClassType.Field;
+            ///// Полевые устройства (например, датчики AS-i, Profibus)
+            //if (orderNumber.StartsWith("3RG") ||     // Датчики
+            //    orderNumber.StartsWith("7MH"))       // Весы, измерительные устройства
+            //    return DeviceClassType.CompactModule;
 
             // Всё остальное
-            return DeviceClassType.Custom;
+            return DeviceClassType.CompactModule;
         }
     }
 }

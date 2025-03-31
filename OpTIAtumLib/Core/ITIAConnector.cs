@@ -2,6 +2,7 @@
 using OpTIAtumLib.Service.TIASession;
 using OpTIAtumLib.Service.Projects;
 using OpTIAtumLib.Service.Devices;
+using OpTIAtumLib.Service.Subnets;
 
 namespace OpTIAtumLib.Core
 {
@@ -34,6 +35,8 @@ namespace OpTIAtumLib.Core
         /// Сервис для добавления устройств и модулей в проект.
         /// </summary>
         IDeviceService DeviceService { get; }
+
+        ISubnetService SubnetService { get; }
 
         /// <summary>
         /// Метод инициализации фасада после запуска TIA и открытия/создания проекта.

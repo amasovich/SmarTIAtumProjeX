@@ -20,7 +20,7 @@ namespace OpTIAtumLib.Service.Devices
         public Device AddDeviceToProject(DeviceModel deviceModel)
         {
             if (_project == null)
-                throw new InvalidOperationException("TIA Project не открыт. Сначала открой или создай проект.");
+                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
 
             if (deviceModel == null)
                 throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
@@ -52,7 +52,7 @@ namespace OpTIAtumLib.Service.Devices
         public Device AddDeviceToProject(DeviceModel deviceModel, DeviceUserGroup targetGroup)
         {
             if (_project == null)
-                throw new InvalidOperationException("TIA Project не открыт. Сначала открой или создай проект.");
+                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
 
             if (deviceModel == null)
                 throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
@@ -84,7 +84,7 @@ namespace OpTIAtumLib.Service.Devices
         public Device AddDeviceToUngrouped(DeviceModel deviceModel)
         {
             if (_project == null)
-                throw new InvalidOperationException("TIA Project не открыт. Сначала открой или создай проект.");
+                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
 
             if (deviceModel == null)
                 throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
@@ -117,8 +117,12 @@ namespace OpTIAtumLib.Service.Devices
         /// <inheritdoc/>
         public void AddDeviceItemToDevice(Device device, DeviceModel moduleModel)
         {
+
+            if (_project == null)
+                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
+
             if (device == null)
-                throw new ArgumentNullException(nameof(device));
+                throw new ArgumentNullException(nameof(device), "Объект Device не может быть null.");
 
             string typeIdentifier = moduleModel.TypeIdentifier;
             string name = moduleModel.DeviceName;
