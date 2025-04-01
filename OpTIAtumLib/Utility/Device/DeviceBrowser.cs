@@ -158,22 +158,22 @@ namespace OpTIAtumLib.Utility.Device
             return DeviceClassifier.DetectClassType(orderNumber);
         }
 
-        public static void UpdateNetworkInterfaces(Project project, DeviceModel model)
+        public static void GetNetworkInterfaces(Project project, DeviceModel deviceModel)
         {
             if (project == null)
                 throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
 
-            if (model == null)
-                throw new ArgumentNullException(nameof(model), "Модель устройства не может быть null.");
+            if (deviceModel == null)
+                throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
 
-            if (string.IsNullOrWhiteSpace(model.Station))
+            if (string.IsNullOrWhiteSpace(deviceModel.Station))
                 throw new ArgumentException("Имя станции (Station) в модели не задано.");
 
             // Найти устройство в проекте по имени станции
-            var device = project.Devices.FirstOrDefault(d => d.Name == model.Station);
+            var device = project.Devices.FirstOrDefault(d => d.Name == deviceModel.Station);
             if (device == null)
             {
-                Console.WriteLine($"Устройство с именем '{model.Station}' не найдено в проекте.");
+                Console.WriteLine($"Устройство с именем '{deviceModel.Station}' не найдено в проекте.");
                 return;
             }
 
@@ -192,16 +192,16 @@ namespace OpTIAtumLib.Utility.Device
             }
 
             // Обновление модели устройства списком найденных интерфейсов
-            model.NetworkInterfaceNames = interfaces;
+            deviceModel.NetworkInterfaceNames = interfaces;
 
             // Вывод информации о найденных интерфейсах
             if (interfaces.Count > 0)
             {
-                Console.WriteLine($"Найдены сетевые интерфейсы для '{model.Station}': {string.Join(", ", interfaces)}");
+                Console.WriteLine($"Найдены сетевые интерфейсы для '{deviceModel.Station}': {string.Join(", ", interfaces)}");
             }
             else
             {
-                Console.WriteLine($"Сетевые интерфейсы для '{model.Station}' не найдены.");
+                Console.WriteLine($"Сетевые интерфейсы для '{deviceModel.Station}' не найдены.");
             }
         }
     }

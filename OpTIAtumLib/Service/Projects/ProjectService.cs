@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using OpTIAtumLib.Utility.Logger;
+using OpTIAtumLib.Utility.Guard;
 
 namespace OpTIAtumLib.Service.Projects
 {
@@ -18,23 +19,44 @@ namespace OpTIAtumLib.Service.Projects
         /// <inheritdoc/>
         public Project CreateProject(string projectPath, string projectName)
         {
+            Guard.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
+            Guard.NotNullOrWhiteSpace(projectName, nameof(projectName));
+
+            Logger.Debug($"Создание проекта '{projectName}' по пути '{projectPath}'...");
+
             var targetDirectory = new DirectoryInfo(projectPath);
 
             if (!targetDirectory.Exists)
                 targetDirectory.Create();
 
-            var project = _tiaPortal.Projects.Create(targetDirectory, projectName);
-            Logger.Create($"Проект '{projectName}' успешно создан по пути '{projectPath}'.");
-            return project;
+            try
+            {
+                var project = _tiaPortal.Projects.Create(targetDirectory, projectName);
+                Logger.Create($"Проект '{projectName}' успешно создан по пути '{projectPath}'.");
+                return project;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Ошибка при создании проекта '{projectName}': {ex.Message}");
+                throw;
+            }
         }
 
         /// <inheritdoc/>
         public Project OpenProject(string projectPath, string projectName)
         {
+            Guard.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
+            Guard.NotNullOrWhiteSpace(projectName, nameof(projectName));
+
             var filePath = Path.Combine(projectPath, projectName + ProjectExtension);
 
+            Logger.Debug($"Попытка открыть проект '{projectName}' из '{filePath}'...");
+
             if (!File.Exists(filePath))
+            {
+                Logger.Error($"Проект не найден по пути: '{filePath}'");
                 throw new FileNotFoundException("Проект не найден по указанному пути.", filePath);
+            }
 
             try
             {

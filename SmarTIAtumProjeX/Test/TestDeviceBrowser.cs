@@ -25,13 +25,13 @@ namespace SmarTIAtumProjeX.Test
                 var instance = ((TIASessionService)tia.SessionService).Instance;
 
                 //Открытие проекта
-                string projectName = "TestProject";
-                string projectPath = @"C:\Users\v.bereznyak\Desktop\TIA_Projects\TestProject";
+                string projectName = "SubnetTestProject";
+                string projectPath = @"C:\Users\v.bereznyak\Desktop\TIA_Projects\SubnetTestProject";
+                //string projectPath = @"C:\Users\v.bereznyak\Desktop\TIA_Projects\TestProject";
                 //string projectName = "MK1517_Stage2OldCPU_LS_1";
                 //string projectPath = @"C:\Users\v.bereznyak\Documents\Automation\Sessions\MK1517_Stage2OldCPU_LS_1";
 
                 var project = new ProjectService(instance).OpenProject(projectPath, projectName);
-                Console.WriteLine($"[INFO] Проект открыт: {projectName}");
 
                 // Инициализация TIAConnector с открытым проектом
                 tia.Initialize(instance, project);

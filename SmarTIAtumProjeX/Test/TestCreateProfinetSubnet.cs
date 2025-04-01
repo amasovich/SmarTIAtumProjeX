@@ -6,6 +6,7 @@ using OpTIAtumLib.Service.Projects;
 using OpTIAtumLib.Service.TIASession;
 using OpTIAtumLib.Utility.Logger;
 using OpTIAtumLib.Utility.Device;
+using System.Collections.Generic;
 
 namespace SmarTIAtumProjeX.Test
 {
@@ -15,9 +16,8 @@ namespace SmarTIAtumProjeX.Test
         {
             try
             {
-                Logger.Info("Запуск теста создания подсети...");
+                Logger.Info("Запуск теста создания подсетей и подключения интерфейсов...");
 
-                // Создание фасада TIA
                 var tia = new TIAConnector();
                 tia.SessionService.CreateTIAInstance(enableGuiTIA: true);
                 var instance = ((TIASessionService)tia.SessionService).Instance;
@@ -31,38 +31,42 @@ namespace SmarTIAtumProjeX.Test
                 var project = new ProjectService(instance).CreateProject(projectPath, projectName);
                 tia.Initialize(instance, project);
 
-                Logger.Info($"Создаём Идентификаторы устройств и модулей:");
+                Logger.Info("Создаём устройство с интерфейсами и подсетями:");
                 DeviceModel plc = new DeviceModel
                 {
                     DeviceName = "MDC2_K001",
                     Station = "S71500 station_1",
-                    OrderNumber = "6ES7 517-3FP00-0AB0", // S7-1517
+                    OrderNumber = "6ES7 517-3FP00-0AB0",
                     FirmwareVersion = "V3.0",
                     IncludeFailsafe = false,
-                    PositionNumber = 0
+                    PositionNumber = 0,
+                    NetworkInterfaceNames = new List<string> { "PROFINET interface_1", "PROFINET interface_2" },
+                    SubnetNames = new List<string> { "PROFINET_1", "PROFINET_2" },
+                    SubnetTypes = new List<string> { "PROFINET", "PROFINET" }
                 };
                 Logger.Add($"Device: {plc.DeviceName} TypeId: {plc.TypeIdentifier}");
 
                 tia.DeviceService.AddDeviceToProject(plc);
 
-                //просмотр текущих интерфейсов в ПЛК
-                DeviceBrowser.UpdateNetworkInterfaces(tia.Project, plc);
-
-                Logger.Info($"Создаём подсеть:");
-                SubnetModel Profinet1 = new SubnetModel
+                Logger.Info("Создаём подсети:");
+                for (int i = 0; i < plc.SubnetNames.Count; i++)
                 {
-                    SubnetName = "PROFINET1",
-                    SubnetType = "PROFINET"
-                };
-                Logger.Add($"Subnet: {Profinet1.SubnetName} TypeId: {Profinet1.TypeIdentifier}");
+                    SubnetModel subnet = new SubnetModel
+                    {
+                        SubnetName = plc.SubnetNames[i],
+                        SubnetType = plc.SubnetTypes[i]
+                    };
+                    Logger.Add($"Subnet: {subnet.SubnetName} TypeId: {subnet.TypeIdentifier}");
 
-                // Создание подсети
-                var subnetProfinet1 = tia.SubnetService.CreateSubnet(Profinet1);
+                    tia.SubnetService.CreateSubnet(subnet);
+                }
+
+                tia.SubnetService.ConnectDeviceToSubnet(plc);
 
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при создании подсети: " + ex.Message);
+                Logger.Error("Ошибка при создании подсети или подключении интерфейсов: " + ex.Message);
             }
 
             Logger.Info("Тест завершён. Нажмите любую клавишу...");

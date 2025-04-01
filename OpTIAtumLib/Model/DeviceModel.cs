@@ -1,5 +1,7 @@
 ﻿using OpTIAtumLib.Utility.Device;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpTIAtumLib.Model
 {
@@ -94,6 +96,41 @@ namespace OpTIAtumLib.Model
         /// Каждое имя будет сопоставлено с соответствующим сетевым интерфейсом.
         /// </summary>
         public List<string> SubnetNames { get; set; }
+
+        /// <summary>
+        /// Упрощённые имена типов подсетей, соответствующие списку подсетей (например, "PROFINET", "PROFIBUS", "MPI", "ASI").
+        /// </summary>
+        public List<string> SubnetTypes { get; set; }
+
+        /// <summary>
+        /// Генерирует список полных имён идентификаторов типов подсетей для Openness API.
+        /// Например, для типа PROFINET вернёт "System:Subnet.Ethernet".
+        /// </summary>
+        public List<string> TypeSubnetIdentifier
+        {
+            get
+            {
+                if (SubnetTypes == null || SubnetTypes.Count == 0)
+                    throw new InvalidOperationException("Отсутствуют типы подсетей для генерации идентификаторов.");
+
+                return SubnetTypes.Select(type =>
+                {
+                    switch (type)
+                    {
+                        case "PROFINET":
+                            return "System:Subnet.Ethernet";
+                        case "PROFIBUS":
+                            return "System:Subnet.Profibus";
+                        case "MPI":
+                            return "System:Subnet.Mpi";
+                        case "ASI":
+                            return "System:Subnet.Asi";
+                        default:
+                            throw new InvalidOperationException($"Неизвестный тип подсети: {type}");
+                    }
+                }).ToList();
+            }
+        }
 
         #endregion // properties
     }

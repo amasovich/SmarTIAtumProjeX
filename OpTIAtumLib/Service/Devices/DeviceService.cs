@@ -1,9 +1,11 @@
 ﻿using OpTIAtumLib.Model;
 using OpTIAtumLib.Utility.Logger;
+using OpTIAtumLib.Utility.Guard;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
 using System;
 using System.Linq;
+using Siemens.Engineering.HmiUnified.HmiLogging.HmiLoggingCommon;
 
 namespace OpTIAtumLib.Service.Devices
 {
@@ -19,21 +21,18 @@ namespace OpTIAtumLib.Service.Devices
         /// <inheritdoc/>
         public Device AddDeviceToProject(DeviceModel deviceModel)
         {
-            if (_project == null)
-                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
-
-            if (deviceModel == null)
-                throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
+            Guard.ProjectInitialized(_project);
+            Guard.NotNull(deviceModel, nameof(deviceModel));
 
             string typeIdentifier = deviceModel.TypeIdentifier;
             string deviceName = deviceModel.DeviceName;
             string stationName = deviceModel.Station;
 
-            if (string.IsNullOrWhiteSpace(typeIdentifier))
-                throw new ArgumentException("TypeIdentifier обязателен для создания устройства.");
+            Guard.NotNullOrWhiteSpace(typeIdentifier, nameof(typeIdentifier));
+            Guard.NotNullOrWhiteSpace(deviceName, nameof(deviceName));
+            Guard.NotNullOrWhiteSpace(stationName, nameof(stationName));
 
-            if (string.IsNullOrWhiteSpace(deviceName))
-                throw new ArgumentException("DeviceName обязателен для создания устройства.");
+            Logger.Debug($"Добавление устройства '{deviceName}' типа '{typeIdentifier}' на станцию '{stationName}' в корень проекта.");
 
             try
             {
@@ -51,21 +50,18 @@ namespace OpTIAtumLib.Service.Devices
         /// <inheritdoc/>
         public Device AddDeviceToProject(DeviceModel deviceModel, DeviceUserGroup targetGroup)
         {
-            if (_project == null)
-                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
-
-            if (deviceModel == null)
-                throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
+            Guard.ProjectInitialized(_project);
+            Guard.NotNull(deviceModel, nameof(deviceModel));
 
             string typeIdentifier = deviceModel.TypeIdentifier;
             string deviceName = deviceModel.DeviceName;
             string stationName = deviceModel.Station;
 
-            if (string.IsNullOrWhiteSpace(typeIdentifier))
-                throw new ArgumentException("TypeIdentifier обязателен для создания устройства.");
+            Guard.NotNullOrWhiteSpace(typeIdentifier, nameof(typeIdentifier));
+            Guard.NotNullOrWhiteSpace(deviceName, nameof(deviceName));
+            Guard.NotNullOrWhiteSpace(stationName, nameof(stationName));
 
-            if (string.IsNullOrWhiteSpace(deviceName))
-                throw new ArgumentException("DeviceName обязателен для создания устройства.");
+            Logger.Debug($"Добавление устройства '{deviceName}' типа '{typeIdentifier}' на станцию '{stationName}' в корень проекта.");
 
             try
             {
@@ -83,21 +79,18 @@ namespace OpTIAtumLib.Service.Devices
         /// <inheritdoc/>
         public Device AddDeviceToUngrouped(DeviceModel deviceModel)
         {
-            if (_project == null)
-                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
-
-            if (deviceModel == null)
-                throw new ArgumentNullException(nameof(deviceModel), "Модель устройства не может быть null.");
+            Guard.ProjectInitialized(_project);
+            Guard.NotNull(deviceModel, nameof(deviceModel));
 
             string typeIdentifier = deviceModel.TypeIdentifier;
             string deviceName = deviceModel.DeviceName;
             string stationName = deviceModel.Station;
 
-            if (string.IsNullOrWhiteSpace(typeIdentifier))
-                throw new ArgumentException("TypeIdentifier обязателен для создания устройства.");
+            Guard.NotNullOrWhiteSpace(typeIdentifier, nameof(typeIdentifier));
+            Guard.NotNullOrWhiteSpace(deviceName, nameof(deviceName));
+            Guard.NotNullOrWhiteSpace(stationName, nameof(stationName));
 
-            if (string.IsNullOrWhiteSpace(deviceName))
-                throw new ArgumentException("DeviceName обязателен для создания устройства.");
+            Logger.Debug($"Добавление устройства '{deviceName}' типа '{typeIdentifier}' на станцию '{stationName}' в корень проекта.");
 
             try
             {
@@ -117,25 +110,23 @@ namespace OpTIAtumLib.Service.Devices
         /// <inheritdoc/>
         public void AddDeviceItemToDevice(Device device, DeviceModel moduleModel)
         {
-
-            if (_project == null)
-                throw new InvalidOperationException("TIA Project не инициализирован. Сначала вызовите Initialize().");
-
-            if (device == null)
-                throw new ArgumentNullException(nameof(device), "Объект Device не может быть null.");
+            Guard.ProjectInitialized(_project);
+            Guard.NotNull(device, nameof(device));
+            Guard.NotNull(moduleModel, nameof(moduleModel));
 
             string typeIdentifier = moduleModel.TypeIdentifier;
             string name = moduleModel.DeviceName;
             int position = moduleModel.PositionNumber;
 
+            Logger.Debug($"Инициализация добавления модуля '{name}' в устройство '{device.Name}' на позицию {position}, тип '{typeIdentifier}'.");
+
             var parent = device.DeviceItems
                 .FirstOrDefault(di => di.GetPlugLocations().Any(pl => pl.PositionNumber == position));
 
-            if (parent == null)
-                throw new InvalidOperationException("Подходящий слот для модуля не найден.");
+            Guard.OperationValid(parent != null, "Подходящий слот для модуля не найден.");
+            Guard.OperationValid(parent.CanPlugNew(typeIdentifier, name, position), $"Невозможно вставить модуль '{name}' на позицию {position}.");
 
-            if (!parent.CanPlugNew(typeIdentifier, name, position))
-                throw new InvalidOperationException($"Невозможно вставить модуль '{name}' на позицию {position}.");
+            Logger.Debug($"Попытка вставить модуль '{name}' в слот {position} устройства '{device.Name}'.");
 
             try
             {

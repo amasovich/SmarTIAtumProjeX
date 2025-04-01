@@ -26,6 +26,25 @@ namespace OpTIAtumLib.Service.Subnets
         /// </returns>
         Subnet CreateSubnet(SubnetModel subnetModel);
 
+        /// <summary>
+        /// Подключает устройства к подсети согласно указанным в DeviceModel интерфейсам и подсетям.
+        /// </summary>
+        /// <param name="deviceModel">Модель устройства, которое нужно подключить.</param>
+        /// <param name="subnetModel">Модель подсети, к которой нужно подключить устройство.</param>
+        /// <exception cref="ArgumentNullException">Если входные параметры некорректны.</exception>
+        void ConnectDeviceToSubnet(DeviceModel deviceModel);
+
+
+
+
+
+
+
+
+
+
+
+
         //Задача: Создать подсеть и сразу подключить её к Node (сетевому интерфейсу устройства/модуля).
         //Subnet CreateAndConnectToNode(Node node, string subnetName);
 
