@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace OpTIAtumLib.Utility.Guard
+namespace OpTIAtumLib.Utility.Guards
 {
     public static class Guard
     {
