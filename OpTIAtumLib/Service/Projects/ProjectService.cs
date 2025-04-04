@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 using OpTIAtumLib.Utility.Logger;
-using OpTIAtumLib.Utility.Guard;
+using OpTIAtumLib.Utility.Guards;
 
 namespace OpTIAtumLib.Service.Projects
 {

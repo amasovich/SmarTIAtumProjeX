@@ -1,6 +1,6 @@
 ﻿using OpTIAtumLib.Model;
 using OpTIAtumLib.Utility.Device;
-using OpTIAtumLib.Utility.Guard;
+using OpTIAtumLib.Utility.Guards;
 using OpTIAtumLib.Utility.Logger;
 using Siemens.Engineering;
 using Siemens.Engineering.HmiUnified.HmiLogging.HmiLoggingCommon;

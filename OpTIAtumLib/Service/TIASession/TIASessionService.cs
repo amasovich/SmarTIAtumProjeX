@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using OpTIAtumLib.Utility.Guard;
+using OpTIAtumLib.Utility.Guards;
 using OpTIAtumLib.Utility.Logger;
 using Siemens.Engineering;
 using System;

@@ -1,6 +1,6 @@
 ﻿using OpTIAtumLib.Model;
 using OpTIAtumLib.Utility.Logger;
-using OpTIAtumLib.Utility.Guard;
+using OpTIAtumLib.Utility.Guards;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
 using System;
