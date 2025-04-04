@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace OpTIAtumLib.Utility.Guard
 {
@@ -59,6 +61,55 @@ namespace OpTIAtumLib.Utility.Guard
                 throw new InvalidOperationException(fullMessage);
             }
         }
+
+        //public static class CollectionGuard
+        //{
+        //    public static void NotEmpty<T>(IEnumerable<T> collection, string paramName)
+        //    {
+        //        if (collection == null || !collection.Any())
+        //            throw new ArgumentException($"Коллекция {paramName} не должна быть пустой.", paramName);
+        //    }
+
+        //    public static void AllNotNull<T>(IEnumerable<T> collection, string paramName)
+        //    {
+        //        if (collection.Any(x => x == null))
+        //            throw new ArgumentException($"Коллекция {paramName} содержит null-элементы.", paramName);
+        //    }
+        //}
+
+        public static class EnumGuard
+        {
+            public static void Defined<T>(T value, string paramName) where T : Enum
+            {
+                if (!Enum.IsDefined(typeof(T), value))
+                    throw new ArgumentException($"Недопустимое значение {value} для перечисления {typeof(T).Name}", paramName);
+            }
+        }
+
+        public static class FileGuard
+        {
+            public static void FileExists(string path, string paramName)
+            {
+                if (!File.Exists(path))
+                    throw new FileNotFoundException($"Файл по пути {path} не найден", paramName);
+            }
+        }
+
+
+        public static class RangeGuard
+        {
+            public static void InRange(int value, int min, int max, string paramName)
+            {
+                if (value < min || value > max)
+                    throw new ArgumentOutOfRangeException(paramName, $"Значение {value} должно быть в диапазоне [{min}..{max}]");
+            }
+        }
+
+
+
+
+
+
 
     }
 }

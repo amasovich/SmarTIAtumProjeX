@@ -62,8 +62,9 @@
     <Compile Include="Model\DeviceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\Device\DevicePropertiesBrowser.cs" />
-    <Compile Include="Utility\Guard\Guard.cs" />
+    <Compile Include="Utility\Guards\Guard.cs" />
     <Compile Include="Utility\Logger\Logger.cs" />
+    <Compile Include="Utility\Validation\DeviceModelValidator.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

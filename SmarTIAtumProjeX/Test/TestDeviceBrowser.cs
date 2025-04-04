@@ -26,6 +26,7 @@ namespace SmarTIAtumProjeX.Test
 
                 //Открытие проекта
                 string projectName = "SubnetTestProject";
+                //string projectName = "TestProject";
                 string projectPath = @"C:\Users\v.bereznyak\Desktop\TIA_Projects\SubnetTestProject";
                 //string projectPath = @"C:\Users\v.bereznyak\Desktop\TIA_Projects\TestProject";
                 //string projectName = "MK1517_Stage2OldCPU_LS_1";

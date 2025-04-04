@@ -32,7 +32,7 @@ namespace SmarTIAtumProjeX
             //TestCreateProfinetSubnet.Run();
 
             //DeviceClassifierTest.Run();
-             TestDeviceBrowse.Run();
+            TestDeviceBrowse.Run();
             //TestDevicePropertiesBrowser.Run();
 
             //Console.ReadKey(); // Ожидание для просмотра результатов
