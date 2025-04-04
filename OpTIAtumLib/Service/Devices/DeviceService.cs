@@ -1,6 +1,7 @@
 ﻿using OpTIAtumLib.Model;
 using OpTIAtumLib.Utility.Logger;
 using OpTIAtumLib.Utility.Guards;
+using OpTIAtumLib.Utility.Validation;
 using Siemens.Engineering;
 using Siemens.Engineering.HW;
 using System;
@@ -22,15 +23,11 @@ namespace OpTIAtumLib.Service.Devices
         public Device AddDeviceToProject(DeviceModel deviceModel)
         {
             Guard.ProjectInitialized(_project);
-            Guard.NotNull(deviceModel, nameof(deviceModel));
+            DeviceModelValidator.Validate(deviceModel);
 
             string typeIdentifier = deviceModel.TypeIdentifier;
             string deviceName = deviceModel.DeviceName;
             string stationName = deviceModel.Station;
-
-            Guard.NotNullOrWhiteSpace(typeIdentifier, nameof(typeIdentifier));
-            Guard.NotNullOrWhiteSpace(deviceName, nameof(deviceName));
-            Guard.NotNullOrWhiteSpace(stationName, nameof(stationName));
 
             Logger.Debug($"Добавление устройства '{deviceName}' типа '{typeIdentifier}' на станцию '{stationName}' в корень проекта.");
 
@@ -51,15 +48,11 @@ namespace OpTIAtumLib.Service.Devices
         public Device AddDeviceToProject(DeviceModel deviceModel, DeviceUserGroup targetGroup)
         {
             Guard.ProjectInitialized(_project);
-            Guard.NotNull(deviceModel, nameof(deviceModel));
+            DeviceModelValidator.Validate(deviceModel);
 
             string typeIdentifier = deviceModel.TypeIdentifier;
             string deviceName = deviceModel.DeviceName;
             string stationName = deviceModel.Station;
-
-            Guard.NotNullOrWhiteSpace(typeIdentifier, nameof(typeIdentifier));
-            Guard.NotNullOrWhiteSpace(deviceName, nameof(deviceName));
-            Guard.NotNullOrWhiteSpace(stationName, nameof(stationName));
 
             Logger.Debug($"Добавление устройства '{deviceName}' типа '{typeIdentifier}' на станцию '{stationName}' в корень проекта.");
 
@@ -80,15 +73,11 @@ namespace OpTIAtumLib.Service.Devices
         public Device AddDeviceToUngrouped(DeviceModel deviceModel)
         {
             Guard.ProjectInitialized(_project);
-            Guard.NotNull(deviceModel, nameof(deviceModel));
+            DeviceModelValidator.Validate(deviceModel);
 
             string typeIdentifier = deviceModel.TypeIdentifier;
             string deviceName = deviceModel.DeviceName;
             string stationName = deviceModel.Station;
-
-            Guard.NotNullOrWhiteSpace(typeIdentifier, nameof(typeIdentifier));
-            Guard.NotNullOrWhiteSpace(deviceName, nameof(deviceName));
-            Guard.NotNullOrWhiteSpace(stationName, nameof(stationName));
 
             Logger.Debug($"Добавление устройства '{deviceName}' типа '{typeIdentifier}' на станцию '{stationName}' в корень проекта.");
 
@@ -112,7 +101,7 @@ namespace OpTIAtumLib.Service.Devices
         {
             Guard.ProjectInitialized(_project);
             Guard.NotNull(device, nameof(device));
-            Guard.NotNull(moduleModel, nameof(moduleModel));
+            DeviceModelValidator.Validate(moduleModel);
 
             string typeIdentifier = moduleModel.TypeIdentifier;
             string name = moduleModel.DeviceName;
