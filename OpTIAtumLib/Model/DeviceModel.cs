@@ -11,7 +11,7 @@ namespace OpTIAtumLib.Model
     /// </summary>
     public class DeviceModel
     {
-        #region properties
+        #region main data
 
         /// <summary>
         /// Название станции (например, "S71500 station_1").
@@ -60,24 +60,14 @@ namespace OpTIAtumLib.Model
         public int PositionNumber { get; set; }
 
         /// <summary>
-        /// Генерируемый TypeIdentifier на основе GSD или OrderNumber.
+        /// Имя родительского устройства, если текущая модель — модуль.
+        /// Используется при импорте из внешних данных для привязки.
         /// </summary>
-        public string TypeIdentifier =>
-        !string.IsNullOrWhiteSpace(GsdName) && !string.IsNullOrWhiteSpace(GsdType)
-        ? $"GSD:{GsdName}/{GsdType}" + (string.IsNullOrWhiteSpace(GsdId) ? "" : $"/{GsdId}")
-        : $"OrderNumber:{OrderNumber}" + (string.IsNullOrWhiteSpace(FirmwareVersion) ? "" : $"/{FirmwareVersion}");
+        public string ParentDeviceName { get; set; }
 
-        private DeviceClassType? _classType;
+        #endregion // main data
 
-        /// <summary>
-        /// Класс устройства (PLC, HMI, IO и т.д.).
-        /// Автоматически определяется по OrderNumber, если не задан вручную.
-        /// </summary>
-        public DeviceClassType ClassType
-        {
-            get => _classType ?? DeviceClassifier.DetectClassType(OrderNumber);
-            set => _classType = value;
-        }
+        #region network data
 
         /// <summary>
         /// Имена интерфейсов устройства, которые следует подключить к подсетям.
@@ -101,6 +91,30 @@ namespace OpTIAtumLib.Model
         /// Упрощённые имена типов подсетей, соответствующие списку подсетей (например, "PROFINET", "PROFIBUS", "MPI", "ASI").
         /// </summary>
         public List<string> SubnetTypes { get; set; }
+
+        #endregion // network data
+
+        #region additional data
+
+        /// <summary>
+        /// Генерируемый TypeIdentifier на основе GSD или OrderNumber.
+        /// </summary>
+        public string TypeIdentifier =>
+        !string.IsNullOrWhiteSpace(GsdName) && !string.IsNullOrWhiteSpace(GsdType)
+        ? $"GSD:{GsdName}/{GsdType}" + (string.IsNullOrWhiteSpace(GsdId) ? "" : $"/{GsdId}")
+        : $"OrderNumber:{OrderNumber}" + (string.IsNullOrWhiteSpace(FirmwareVersion) ? "" : $"/{FirmwareVersion}");
+
+        private DeviceClassType? _classType;
+
+        /// <summary>
+        /// Класс устройства (PLC, HMI, IO и т.д.).
+        /// Автоматически определяется по OrderNumber, если не задан вручную.
+        /// </summary>
+        public DeviceClassType ClassType
+        {
+            get => _classType ?? DeviceClassifier.DetectClassType(OrderNumber);
+            set => _classType = value;
+        }
 
         /// <summary>
         /// Генерирует список полных имён идентификаторов типов подсетей для Openness API.
@@ -132,7 +146,25 @@ namespace OpTIAtumLib.Model
             }
         }
 
-        #endregion // properties
+        /// <summary>
+        /// Произвольное текстовое описание устройства.
+        /// Может отображаться в UI, логах, Excel.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Логическая группа устройства (например, "Шкаф 1").
+        /// Не связана с TIA группами.
+        /// </summary>
+        public string GroupName { get; set; }
+
+        /// <summary>
+        /// Включено ли устройство для генерации.
+        /// Если false — строка будет проигнорирована.
+        /// </summary>
+        public bool IsEnabled { get; set; } = true;
+
+        #endregion // additional data
     }
 }
 
